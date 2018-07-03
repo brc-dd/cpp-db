@@ -4,5 +4,5 @@ Windows 10
 ### Current Status
 Under Development
 ### Credits for External Libraries
-* "rlutil.h" -> @tapio
-* "base64.h" -> @ReneNyffenegger
+* "rlutil.h" -> @github/tapio
+* "base64.h" -> @github/ReneNyffenegger
