@@ -10,3 +10,7 @@ Under Development
 Make g++ follow the coming C++1z (aka C++17) ISO C++ language standard.
 
 Compiler Flags -> `-std=c++1z`
+### Admin Credentials
+Username -> 0xAdminCID
+
+Password -> 0xPassword
