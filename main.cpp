@@ -1085,13 +1085,7 @@ bool caller3(bool userisAdmin)
 
 int main()
 {
-    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-    SMALL_RECT rect;
-    rect.Top = 0;
-    rect.Left = 0;
-    rect.Bottom = console_width;
-    rect.Right = 300;
-    SetConsoleWindowInfo(handle, 1, &rect);
+    system("MODE CON COLS=80 LINES=20");
     hidecursor();
     bool bipass=false;
     credentials logon=caller1();
