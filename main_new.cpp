@@ -367,7 +367,7 @@ bool xCredentials::_Check(bool doLog=true)
                 time_t tt=system_clock::to_time_t(today);
                 ofstream ofile("logonDetails", ios::app);
                 ofile<<endl<<ctime(&tt)<<endl<<"UserId : "<<decrypt(u)<<endl;
-                if(u==string("MHhBZG1pbkNJRA=="))
+                if(u==encrypt(string("0xAdminCID")))
                     userisAdmin=true;
                 else
                     userisAdmin=false;
