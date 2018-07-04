@@ -1,6 +1,6 @@
 This is a C++ based criminal database management program.
 ### Current Support
-Windows 10 with GNU GCC Compiler
+Windows 10(x86) with GNU GCC Compiler
 ### Current Status
 Under Development
 ### Credits for External Libraries
