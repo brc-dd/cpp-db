@@ -29,6 +29,23 @@ using namespace std::this_thread;
 using namespace std::chrono;
 using namespace rlutil;
 
+void SetWindow(int Width, int Height, bool enableScrollBar=false)
+{
+    _COORD coord;
+    coord.X = Width;
+    coord.Y = Height;
+    _SMALL_RECT Rect;
+    Rect.Top = 0;
+    Rect.Left = 0;
+    Rect.Bottom = Height - 1;
+    Rect.Right = Width - 1;
+    if(enableScrollBar)
+        coord.Y=300;                                      // Enable Scroll Bar
+    HANDLE Handle = GetStdHandle(STD_OUTPUT_HANDLE);      // Get Handle
+    SetConsoleScreenBufferSize(Handle, coord);            // Set Buffer Size
+    SetConsoleWindowInfo(Handle, TRUE, &Rect);            // Set Window Size
+}
+
 struct date
 {
     unsigned short dd, mm, yyyy;
@@ -430,6 +447,7 @@ void caller2(bool userisAdmin, bool bipass)
     }
     system("cls");
     str="Central Investigation Department";
+    SetWindow(80, 20, true);
     cout<<endl;
     Align0(str, -2);
     cout<<endl;
@@ -1081,22 +1099,6 @@ bool caller3(bool userisAdmin)
         else break;
     } while(true);
     return false;
-}
-
-void SetWindow(int Width, int Height)
-{
-    _COORD coord;
-    coord.X = Width;
-    coord.Y = Height;
-    _SMALL_RECT Rect;
-    Rect.Top = 0;
-    Rect.Left = 0;
-    Rect.Bottom = Height - 1;
-    Rect.Right = Width - 1;
-    coord.Y=300;                                          // Enable Scrolling
-    HANDLE Handle = GetStdHandle(STD_OUTPUT_HANDLE);      // Get Handle
-    SetConsoleScreenBufferSize(Handle, coord);            // Set Buffer Size
-    SetConsoleWindowInfo(Handle, TRUE, &Rect);            // Set Window Size
 }
 
 int main()
