@@ -1,8 +1,6 @@
 #pragma once
 
-#include <algorithm>
-#include <cctype>
-#include <string>
+#include <bits/stdc++.h>
 
 struct date
 {
