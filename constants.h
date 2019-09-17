@@ -30,6 +30,6 @@
 
 #include <string>
 
-std::string _key_ = "gx15cc92shiaci04";
-std::string _iv_ = "0zls0unxvow5juno";
+//std::string _key_ = "gx15cc92shiaci04";
+//std::string _iv_ = "0zls0unxvow5juno";
 std::string delim = "GHIJKLMNOPQRSTUVWXYZ";
