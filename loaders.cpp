@@ -1,4 +1,43 @@
-void SetWindow(int Width, int Height, bool enableScrollBar=false)
+#include "loaders.h"
+
+void ClearScreen()
+{
+    HANDLE                     hStdOut;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    DWORD                      count;
+    DWORD                      cellCount;
+    COORD                      homeCoords = { 0, 0 };
+
+    hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
+    if (hStdOut == INVALID_HANDLE_VALUE) return;
+
+    /* Get the number of cells in the current buffer */
+    if (!GetConsoleScreenBufferInfo( hStdOut, &csbi )) return;
+    cellCount = csbi.dwSize.X *csbi.dwSize.Y;
+
+    /* Fill the entire buffer with spaces */
+    if (!FillConsoleOutputCharacter(
+        hStdOut,
+        (TCHAR) ' ',
+        cellCount,
+        homeCoords,
+        &count
+    )) return;
+
+    /* Fill the entire buffer with the current colors and attributes */
+    if (!FillConsoleOutputAttribute(
+        hStdOut,
+        csbi.wAttributes,
+        cellCount,
+        homeCoords,
+        &count
+    )) return;
+
+    /* Move the cursor home */
+    SetConsoleCursorPosition( hStdOut, homeCoords );
+}
+
+void SetWindow(int Width, int Height, bool enableScrollBar)
 {
     _COORD coord;
     coord.X = Width;
@@ -15,35 +54,35 @@ void SetWindow(int Width, int Height, bool enableScrollBar=false)
     SetConsoleWindowInfo(Handle, TRUE, &Rect);            // Set Window Size
 }
 
-void Align0(string str, int i, bool change_line=true)
+void Align0(std::string str, int i, bool change_line)
 {
     int len=str.length();
     if(len%2==0)
-        str+=" ";
-    cout<<setw(((console_width/2)+len/2)-i)<<str;
+        str+=' ';
+    std::cout<<std::setw(((console_width/2)+len/2)-i)<<str;
     if(change_line)
-        cout<<endl;
+        std::cout<<'\n';
 }
 
-void Load0(string str, int k, int padding_change, bool change_line=true)
+void Load0(std::string str, int k, int padding_change, bool change_line)
 {
-    system("cls");
+    ClearScreen();
     for(int i=0; i<padding_vertical-padding_change; i++)
-        cout<<'\n';
+        std::cout<<'\n';
     Align0(str, k, change_line);
     if(change_line)
-        cout<<endl;
+        std::cout<<'\n';
 }
 
-void Load0(string str1, string str2, int k)
+void Load0(std::string str1, std::string str2, int k)
 {
     Load0(str1, 0, 2);
     Align0(str2, k);
 }
 
-void Load0(string str1, string str2, string str3, int k)
+void Load0(std::string str1, std::string str2, std::string str3, int k)
 {
     Load0(str1, str2, 1);
-    cout<<endl;
+    std::cout<<'\n';
     Align0(str3, k);
 }
