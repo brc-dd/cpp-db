@@ -1,7 +1,4 @@
-#include <fstream>
-#include <ios>
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 
 #include <duthomhas/csprng.hpp>
 
