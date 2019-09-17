@@ -1,7 +1,42 @@
-bool isValidName(string name)
+#include "validators.h"
+
+bool iequals(const std::string& a, const std::string& b)
+{
+    return std::equal(a.begin(), a.end(),
+                      b.begin(), b.end(),
+                      [](char a, char b) {
+                          return std::tolower(a) == std::tolower(b);
+                      });
+}
+
+std::string to_upper(std::string str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+    return str;
+}
+
+std::istream& getline(std::istream& input, std::string& str, std::string delim)
+{
+    str.erase();
+    char ch;
+    while(input and str.length()<str.max_size())
+    {
+        input.get(ch);
+        for(int i=0; i<delim.length(); i++)
+        {
+            if(ch==delim.at(i))
+                return input;
+        }
+        str.append(1, ch);
+    }
+    input.setstate(std::ios::failbit);
+    return input;
+}
+
+bool isValidName(std::string name)
 {
     for(char &a: name)
-        if(!(isalpha(a) or isspace(a)))
+        if(!(std::isalpha(a) or std::isspace(a)))
             return false;
     return true;
 }
@@ -36,19 +71,18 @@ bool isValidDate(date dob)
     return true;
 }
 
-bool isValidBlood(string blood)
+bool isValidBlood(std::string blood)
 {
-    if(iequals(blood, string("ABP")) or iequals(blood, string("ABN")) or iequals(blood, string("AP"))
-    or iequals(blood, string("AN")) or iequals(blood, string("BP")) or iequals(blood, string("BN"))
-    or iequals(blood, string("OP")) or iequals(blood, string("ON")))
-        return true;
-    return false;
+    return iequals(blood, std::string("ABP")) or iequals(blood, std::string("ABN"))
+        or iequals(blood, std::string("AP")) or iequals(blood, std::string("AN"))
+        or iequals(blood, std::string("BP")) or iequals(blood, std::string("BN"))
+        or iequals(blood, std::string("OP")) or iequals(blood, std::string("ON"));
 }
 
-bool isValidAddress(string address)
+bool isValidAddress(std::string address)
 {
     for(char &a: address)
-        if(!(isalnum(a) or isspace(a)))
+        if(!(std::isalnum(a) or std::isspace(a)))
             return false;
     return true;
 }
