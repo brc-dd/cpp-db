@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <iomanip>
-#include <string>
+#include <bits/stdc++.h>
 #include <windef.h>
 #include <windows.h>
 #include "constants.h"
