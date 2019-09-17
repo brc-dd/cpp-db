@@ -1,13 +1,86 @@
-string encrypt(string str)
+#include "shade.h"
+
+std::string encrypt(std::string plain)
 {
-    for(int i=0; i<iterateOver; i++)
-        str=base64_encode(reinterpret_cast<const unsigned char*>(str.c_str()),str.length());
-    return str;
+    CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH], iv[CryptoPP::AES::BLOCKSIZE];
+    
+    extern std::string _key_, _iv_;
+
+    for(int i=0; i<CryptoPP::AES::DEFAULT_KEYLENGTH; i++)
+        key[i] = _key_.at(i);
+
+    for(int i=0; i<CryptoPP::AES::BLOCKSIZE; i++)
+        iv[i] = _iv_.at(i);
+    
+    std::string cipher;
+
+    CryptoPP::CFB_Mode< CryptoPP::AES >::Encryption e;
+	e.SetKeyWithIV(key, sizeof(key), iv);
+    CryptoPP::StringSource(plain, true, 
+		new CryptoPP::StreamTransformationFilter(e,
+			new CryptoPP::StringSink(cipher)
+		)    
+	);
+
+    return cipher;
 }
 
-string decrypt(string str)
+std::string decrypt(std::string cipher)
 {
-    for(int i=0; i<iterateOver; i++)
-        str=base64_decode(str);
-    return str;
+    CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH], iv[CryptoPP::AES::BLOCKSIZE];
+    
+    extern std::string _key_, _iv_;
+
+    for(int i=0; i<CryptoPP::AES::DEFAULT_KEYLENGTH; i++)
+        key[i] = _key_.at(i);
+
+    for(int i=0; i<CryptoPP::AES::BLOCKSIZE; i++)
+        iv[i] = _iv_.at(i);
+    
+    std::string recovered;
+
+    CryptoPP::CFB_Mode< CryptoPP::AES >::Decryption d;
+	d.SetKeyWithIV(key, sizeof(key), iv);
+    CryptoPP::StringSource(cipher, true, 
+		new CryptoPP::StreamTransformationFilter(d,
+			new CryptoPP::StringSink(recovered)
+		)
+	);
+
+    return recovered;
+}
+
+std::string encode(std::string orig)
+{
+    std::string encoded;
+
+    encoded.clear();
+	CryptoPP::StringSource(orig, true,
+		new CryptoPP::HexEncoder(
+			new CryptoPP::StringSink(encoded)
+		)
+	);
+
+    return encoded;
+}
+
+std::string decode(std::string orig)
+{
+    std::string decoded;
+
+    decoded.clear();
+	CryptoPP::StringSource(orig, true,
+		new CryptoPP::HexDecoder(
+			new CryptoPP::StringSink(decoded)
+		)
+	);
+
+    return decoded;
+}
+
+char someRANDOMnonHexChar()
+{
+    srand(time(0));
+    extern std::string delim;
+    return delim.at(rand()%20);
 }
