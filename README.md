@@ -8,5 +8,5 @@ generator.cpp should be compiled first and then the resultant executable file sh
 there is a security vulnerability that the constants.h may be retrieved by some agent which will disclose the key and iv\
 some method needs to be implemented to patch this\
 modified constants.h, removed the default \_key\_ and \_iv\_\
-compilation process of every file needs to written\
+compilation process of every file needs to written
 
