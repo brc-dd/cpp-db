@@ -10,4 +10,5 @@ some method needs to be implemented to patch this\
 modified constants.h, removed the default \_key\_ and \_iv\_\
 compilation process of every file needs to written\
 added modified versions of loaders.h and loaders.cpp\
-added modified versions of validators.h and validators.cpp
+added modified versions of validators.h and validators.cpp\
+added modified versions of credentials.h and credential.cpp
