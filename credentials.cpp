@@ -1,62 +1,71 @@
-struct credentials
-{
-    string user;
-    string pwd;
-    string newpwd;
-    string confirm;
-};
+#include "credentials.h"
 
-class xCredentials
+xCredentials xDefault;
+
+fs::path cp=fs::current_path();
+
+inline bool xCredentials::userisAdmin()
 {
-    char user[maxlen], pwd[maxlen];
-public:
-    bool userisAdmin;
-    void construct(string u, string p)
-    {
-        strcpy(user, encrypt(u).c_str());
-        strcpy(pwd, encrypt(p).c_str());
-        if(u==encrypt(string("0xAdminCID")))
-            userisAdmin=true;
-        else
-            userisAdmin=false;
-    }
-    bool _Check(bool);
-    void _Save();
-    bool _isUserUnique();
-    bool _Delete();
-    void _Modify(string, string);
-}xDefault;
+    return (user==encrypt("0xAdminCID"));
+}
+
+inline void xCredentials::__init__(std::string u, std::string p)
+{
+    user=u;
+    pwd=p;
+}
+
+inline bool xCredentials::operator==(const xCredentials &x)
+{
+    return (this->user==x.user) and (this->pwd==x.pwd);
+}
+
+std::ostream& operator<<(std::ostream& out, const xCredentials& x)
+{
+    out<<x.user<<someRANDOMnonHexChar()<<x.pwd<<someRANDOMnonHexChar();
+    return out;
+}
+
+std::istream& operator>>(std::istream& in,  xCredentials& x)
+{
+    extern std::string delim;
+    getline(in, x.user, delim);
+    getline(in, x.pwd, delim);
+	return in;
+}
 
 bool xCredentials::_Check(bool doLog=true)
 {
-    string u(user), p(pwd);
+    std::string u=user, p=pwd;
     bool xSet=false;
-    ifstream ifile("data", ios::binary);
-    ifile.seekg(0, ios::beg);
-    ifile.read((char*)&xDefault, sizeof(xDefault));
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::ifstream ifile((cp/"data").string());
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::ifstream ifile(cp/"data");
+    #endif
+    ifile.seekg(0, std::ios::beg);
     while(ifile and not xSet)
     {
-        if(u==string(user) and p==string(pwd))
+        ifile>>xDefault;
+        if(u==user and p==pwd)
             xSet=true;
-        ifile.read((char*)&xDefault, sizeof(xDefault));
     }
+    ifile.close();
     if(doLog)
     {
-        string str_grant="Access Granted!", str_deny="Access Denied!";
+        std::string str_grant="Access Granted!", str_deny="Access Denied!";
         if(xSet)
-            {
-                Load0(str_grant, 0, 1);
-                //duration< int,ratio<60*60*24> > one_day(1);
-                system_clock::time_point today=system_clock::now();
-                time_t tt=system_clock::to_time_t(today);
-                ofstream ofile("logonDetails", ios::app);
-                ofile<<endl<<ctime(&tt)<<endl<<"UserId : "<<decrypt(u)<<endl;
-                if(u==encrypt(string("0xAdminCID")))
-                    userisAdmin=true;
-                else
-                    userisAdmin=false;
-                return true;
-            }
+        {
+            Load0(str_grant, 0, 1);
+            #ifdef _GCC_VERSION_LESS_THAN_8_
+                std::ofstream ofile((cp/"logs").string(), std::ios::app);
+            #elif _GCC_VERSION_MORE_THAN_8_
+                std::ofstream ofile(cp/"logs", std::ios::app);
+            #endif
+            ofile<<ctime(new time_t(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())))<<'\n'<<"UserId : "<<decrypt(u)<<'\n';
+            ofile.close();
+            return true;
+        }
         Load0(str_deny, 0, 1);
     }
     return xSet;
@@ -64,67 +73,80 @@ bool xCredentials::_Check(bool doLog=true)
 
 void xCredentials::_Save()
 {
-    ofstream ofile("data", ios::app|ios::binary);
-    ofile.write((char*)&xDefault, sizeof(xDefault));
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::ofstream ofile((cp/"data").string(), std::ios::app);
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::ofstream ofile(cp/"data", std::ios::app);
+    #endif
+    ofile<<xDefault;
     ofile.close();
 }
 
 bool xCredentials::_isUserUnique()
 {
-    string u(user), p(pwd);
-    ifstream ifile("data", ios::binary);
-    ifile.seekg(0, ios::beg);
-    ifile.read((char*)&xDefault, sizeof(xDefault));
+    std::string u=user, p=pwd;
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::ifstream ifile((cp/"data").string());
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::ifstream ifile(cp/"data");
+    #endif
+    ifile.seekg(0, std::ios::beg);
     while(ifile)
     {
-        if(u==string(user))
+        ifile>>xDefault;
+        if(u==user)
             return false;
-        ifile.read((char*)&xDefault, sizeof(xDefault));
     }
-    construct(decrypt(u), decrypt(p));    //Reset the values of xDefault
+    ifile.close();
+    __init__(encrypt(u), encrypt(p));
     return true;
 }
 
 bool xCredentials::_Delete()
 {
-    string u(user);
+    std::string u=user;
     bool isAnyChangeMade=false;
-    ifstream ifile("data", ios::binary);
-    ofstream ofile("new", ios::out|ios::binary);
-    ifile.seekg(0, ios::beg);
-    ifile.read((char*)&xDefault, sizeof(xDefault));
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::ifstream ifile((cp/"data").string());
+        std::ofstream ofile((cp/"new").string(), std::ios::out);
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::ifstream ifile(cp/"data");
+        std::ofstream ofile(cp/"new", std::ios::out);
+    #endif
+    ifile.seekg(0, std::ios::beg);
     while(ifile)
     {
-        if(u!=string(user))
-            ofile.write((char*)&xDefault, sizeof(xDefault));
+        ifile>>xDefault;
+        if(u!=user)
+            ofile<<xDefault;
         else
             isAnyChangeMade=true;
-        ifile.read((char*)&xDefault, sizeof(xDefault));
     }
     ifile.close();
     ofile.close();
-    remove("data");
-    rename("new", "data");
+    fs::remove(cp/"data");
+    fs::rename(cp/"new", cp/"data");
     return isAnyChangeMade;
 }
 
-void xCredentials::_Modify(string u, string p)
+void xCredentials::_Modify(std::string u, std::string p)
 {
-    u=encrypt(u);
-    fstream f("data", ios::in|ios::out|ios::binary);
-    f.seekg(0,ios::beg);
-    f.read((char*)&xDefault, sizeof(xDefault));
-    int a=f.tellg();
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::fstream f((cp/"data").string(), std::ios::in|std::ios::out);
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::fstream f(cp/"data", std::ios::in|std::ios::out);
+    #endif
+    f.seekg(0, std::ios::beg);
     while(f)
     {
-        if(u==string(user))
+        f>>xDefault;
+        if(u==user)
         {
-            xDefault.construct(decrypt(u), p);
-            f.seekg(a-sizeof(xDefault), ios::beg);
-            f.write((char*)&xDefault, sizeof(xDefault));
+            f.seekg(-(xDefault.user.length()+xDefault.pwd.length()+2), std::ios::cur);
+            xDefault.__init__(encrypt(u), encrypt(p));
+            f<<xDefault;
             break;
         }
-        f.read((char*)&xDefault, sizeof(xDefault));
     }
     f.close();
 }
