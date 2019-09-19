@@ -26,7 +26,6 @@ class xCredentials
 public:
     bool userisAdmin();
     void __init__(std::string, std::string);
-    bool operator==(const xCredentials&);
     friend std::ostream& operator<<(std::ostream&, const xCredentials&);
     friend std::istream& operator>>(std::istream&,  xCredentials&);
     bool _Check(bool);
