@@ -1,16 +1,16 @@
 #include "validators.h"
 
-std::string dateToString(date d)
+std::string dateToString(date dt)
 {
-    std::string dd = std::to_string(d.dd), mm = std::to_string(d.mm), yyyy = std::to_string(d.yyyy);
+    std::string dd = std::to_string(dt.dd), mm = std::to_string(dt.mm), yyyy = std::to_string(dt.yyyy);
     return ((dd.length()!=2) ? ('0' + dd) : dd)
         +  ((mm.length()!=2) ? ('0' + mm) : mm)
         +  yyyy;
 }
 
-date stringToDate(std::string s)
+date stringToDate(std::string str)
 {
-    return {std::stoi(s.substr(0,2)), std::stoi(s.substr(2,2)), std::stoi(s.substr(4,4))};
+    return {std::stoi(str.substr(0,2)), std::stoi(str.substr(2,2)), std::stoi(str.substr(4,4))};
 }
 
 bool iequals(const std::string& a, const std::string& b)
