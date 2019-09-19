@@ -22,7 +22,7 @@ std::string encrypt(std::string plain)
 		)    
 	);
 
-    return cipher;
+    return encode(cipher);
 }
 
 std::string decrypt(std::string cipher)
@@ -41,7 +41,7 @@ std::string decrypt(std::string cipher)
 
     CryptoPP::CFB_Mode< CryptoPP::AES >::Decryption d;
 	d.SetKeyWithIV(key, sizeof(key), iv);
-    CryptoPP::StringSource(cipher, true, 
+    CryptoPP::StringSource(decode(cipher), true, 
 		new CryptoPP::StreamTransformationFilter(d,
 			new CryptoPP::StringSink(recovered)
 		)
