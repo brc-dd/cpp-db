@@ -1,5 +1,18 @@
 #include "validators.h"
 
+std::string dateToString(date d)
+{
+    std::string dd = std::to_string(d.dd), mm = std::to_string(d.mm), yyyy = std::to_string(d.yyyy);
+    return ((dd.length()!=2) ? ('0' + dd) : dd)
+        +  ((mm.length()!=2) ? ('0' + mm) : mm)
+        +  yyyy;
+}
+
+date stringToDate(std::string s)
+{
+    return {std::stoi(s.substr(0,2)), std::stoi(s.substr(2,2)), std::stoi(s.substr(4,4))};
+}
+
 bool iequals(const std::string& a, const std::string& b)
 {
     return std::equal(a.begin(), a.end(),
