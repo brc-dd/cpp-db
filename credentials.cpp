@@ -15,11 +15,6 @@ inline void xCredentials::__init__(std::string u, std::string p)
     pwd=p;
 }
 
-inline bool xCredentials::operator==(const xCredentials &x)
-{
-    return (this->user==x.user) and (this->pwd==x.pwd);
-}
-
 std::ostream& operator<<(std::ostream& out, const xCredentials& x)
 {
     out<<x.user<<someRANDOMnonHexChar()<<x.pwd<<someRANDOMnonHexChar();
