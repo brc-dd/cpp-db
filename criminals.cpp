@@ -1,233 +1,261 @@
-class criminal_record
+#include "criminals.h"
+
+namespace ch = std::chrono;
+fs::path cp=fs::current_path();
+
+criminal_record criminal;
+
+std::ostream& operator<<(std::ostream& out, const criminal_record& x)
 {
-private:
-    char name[maxlen], father[maxlen], address[maxlen], offense[maxlen], crime_codes[maxlen], blood[5], sex[5];
-    date dob;
-    unsigned int reward, uid;
-public:
-    void _read();
-    void _write();
-    void _search();
-    void _delete();
-    void _modify();
-    void _display();
-    void _encode();
-    void _decode();
-    void _generateUID();
-} criminal;
+    out <<x.name<<someRANDOMnonHexChar()
+        <<x.father<<someRANDOMnonHexChar()
+        <<x.address<<someRANDOMnonHexChar()
+        <<x.offense<<someRANDOMnonHexChar()
+        <<x.crime_codes<<someRANDOMnonHexChar()
+        <<x.blood<<someRANDOMnonHexChar()
+        <<x.sex<<someRANDOMnonHexChar()
+        <<encrypt(dateToString(x.dob))<<someRANDOMnonHexChar()
+        <<encrypt(std::to_string(x.reward))<<someRANDOMnonHexChar()
+        <<encrypt(std::to_string(x.uid))<<someRANDOMnonHexChar();
+    return out;
+}
+
+std::istream& operator>>(std::istream& in,  criminal_record& x)
+{
+    extern std::string delim;
+    std::string dob, reward, uid;
+    getline(in, x.name, delim);
+    getline(in, x.father, delim);
+    getline(in, x.address, delim);
+    getline(in, x.offense, delim);
+    getline(in, x.crime_codes, delim);
+    getline(in, x.blood, delim);
+    getline(in, x.sex, delim);
+    getline(in, dob, delim);
+    getline(in, reward, delim);
+    getline(in, uid, delim);
+    x.length = x.name.length()+x.father.length()+x.address.length()+x.offense.length()
+            + x.crime_codes.length()+x.blood.length()+x.sex.length()+dob.length()+reward.length()
+            + uid.length()+10;
+    x.dob = decrypt(stringToDate(dob));
+    x.reward = decrypt(std::stoul(reward));
+    x.uid = decrypt(std::stoull(uid));
+	return in;
+}
 
 void criminal_record::_generateUID()
 {
-    time_t t;
-    srand((unsigned int)time(&t));
-    fstream f("uids", ios::in|ios::out);
-    f>>uid;
-    f.close();
-    f.open("uids", ios::out);
-    f<<++uid;
-    f.close();
-    uid+=rand();
-    if      (0<=uid and uid<10)         uid*=10000;
-    else if(10<=uid and uid<100)        uid*=1000;
-    else if(100<=uid and uid<1000)      uid*=100;
-    else if(1000<=uid and uid<10000)    uid*=10;
-    else if(10000<=uid and uid<100000)  uid*=1;
-    else ;
-    uid+=(rand()%10);
+    uid = ch::system_clock::now().time_since_epoch().count()
+        * ch::system_clock::period::num
+        / ch::system_clock::period::den;
 }
 
 void criminal_record::_encode()
 {
-    strcpy(name, to_upper(string(name)).c_str());
-    strcpy(father, to_upper(string(father)).c_str());
-    strcpy(address, to_upper(string(address)).c_str());
-    strcpy(offense, to_upper(string(offense)).c_str());
-    strcpy(crime_codes, to_upper(string(crime_codes)).c_str());
-    strcpy(blood, to_upper(string(blood)).c_str());
-    strcpy(sex, to_upper(string(sex)).c_str());
-    strcpy(name, encrypt(string(name)).c_str());
-    strcpy(father, encrypt(string(father)).c_str());
-    strcpy(address, encrypt(string(address)).c_str());
-    strcpy(offense, encrypt(string(offense)).c_str());
-    strcpy(crime_codes, encrypt(string(crime_codes)).c_str());
-    strcpy(blood, encrypt(string(blood)).c_str());
-    strcpy(sex, encrypt(string(sex)).c_str());
+    name = encrypt(to_upper(name));
+    father = encrypt(to_upper(father));
+    address = encrypt(to_upper(address));
+    offense = encrypt(to_upper(offense));
+    crime_codes = encrypt(to_upper(crime_codes));
+    blood = encrypt(to_upper(blood));
+    sex = encrypt(to_upper(sex));
 }
 
 void criminal_record::_decode()
 {
-    strcpy(name, decrypt(string(name)).c_str());
-    strcpy(father, decrypt(string(father)).c_str());
-    strcpy(address, decrypt(string(address)).c_str());
-    strcpy(offense, decrypt(string(offense)).c_str());
-    strcpy(crime_codes, decrypt(string(crime_codes)).c_str());
-    strcpy(blood, decrypt(string(blood)).c_str());
-    strcpy(sex, decrypt(string(sex)).c_str());
+    name = decrypt(to_upper(name));
+    father = decrypt(to_upper(father));
+    address = decrypt(to_upper(address));
+    offense = decrypt(to_upper(offense));
+    crime_codes = decrypt(to_upper(crime_codes));
+    blood = decrypt(to_upper(blood));
+    sex = decrypt(to_upper(sex));
 }
 
 void criminal_record::_display()
 {
-    cout<<"\nName of Criminal: "<<decrypt(string(name))<<" ("<<uid<<")";
-    cout<<"\nSex: "<<decrypt(string(sex));
-    cout<<"\nDate of Birth (mm dd yyyy): "<<dob.mm<<" "<<dob.dd<<" "<<dob.yyyy;
-    cout<<"\nFather's Name: "<<decrypt(string(father));
-    cout<<"\nAddress: "<<decrypt(string(address));
-    cout<<"\nCrime: "<<decrypt(string(offense));
-    cout<<"\nBlood Group: "<<decrypt(string(blood));
-    cout<<"\nCharges (IPC): "<<decrypt(string(crime_codes));
-    cout<<"\nReward (Rs.): "<<reward<<endl;
+    std::cout<<"\nName of Criminal: "<<decrypt(name)<<" ("<<uid<<")";
+    std::cout<<"\nSex: "<<decrypt(sex);
+    std::cout<<"\nDate of Birth (dd mm yyyy): "<<dob.dd<<" "<<dob.mm<<" "<<dob.yyyy;
+    std::cout<<"\nFather's Name: "<<decrypt(father);
+    std::cout<<"\nAddress: "<<decrypt(address);
+    std::cout<<"\nCrime: "<<decrypt(offense);
+    std::cout<<"\nBlood Group: "<<decrypt(blood);
+    std::cout<<"\nCharges (IPC): "<<decrypt(crime_codes);
+    std::cout<<"\nReward (Rs.): "<<reward<<'\n';
 }
 
 void criminal_record::_read()
 {
-    ifstream ifile("cbi", ios::binary);
-    ifile.seekg(0, ios::beg);
-    ifile.read((char*)&criminal, sizeof(criminal));
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::ifstream ifile((cp/"cbi").string());
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::ifstream ifile(cp/"cbi");
+    #endif
+    ifile.seekg(0, std::ios::beg);
     while(ifile)
     {
+        ifile>>criminal;
         _display();
-        ifile.read((char*)&criminal, sizeof(criminal));
-        cout<<'\n';
+        std::cout<<'\n';
     }
     ifile.close();
 }
 
 void criminal_record::_search()
 {
-    string query;
+    std::string query;
     bool found = false;
-    ifstream ifile("cbi", ios::binary);
-    cout<<"\nEnter name of the criminal who has to be searched: ";
-    cin.clear();cin.sync();
-    getline(cin, query);
-    query=to_upper(query);
-    query=encrypt(query);
-    ifile.seekg(0, ios::beg);
-    ifile.read((char*)&criminal, sizeof(this));
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::ifstream ifile((cp/"cbi").string());
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::ifstream ifile(cp/"cbi");
+    #endif
+    std::cout<<"\nEnter name of the criminal who has to be searched: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, query);
+    query=encrypt(to_upper(query));
+    ifile.seekg(0, std::ios::beg);
     while(ifile)
     {
-        if(query==string(name))
+        ifile>>criminal;
+        if(query==name)
         {
             found = true;
-            cout<<"\nThe record(s) of the criminal(s): \n";
+            std::cout<<"\nThe record(s) of the criminal(s): \n";
             _display();
         }
-        ifile.read((char*)&criminal, sizeof(criminal));
     }
-    if(not found) cout<<"\nNo record found!";
+    if(not found) std::cout<<"\nNo record found!";
     ifile.close();
 }
 
 void criminal_record::_write()
 {
     namelb1:
-    cout<<"\nEnter name of the criminal: ";
-    cin.clear();cin.sync();
-    cin.get(name, maxlen);
-    if(not isValidName(string(name)))
+    std::cout<<"\nEnter name of the criminal: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, name);
+    if(not isValidName(name))
     {
-        cout<<"\nInvalid Name!\n";
+        std::cout<<"\nInvalid Name!\n";
         goto namelb1;
     }
     sexlb1:
-    cout<<"\nSex: ";
-    cin.clear();cin.sync();
-    cin.get(sex, 2);
-    if(not isValidSex(sex[0]))
+    std::cout<<"\nSex: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    sd::getline(std::cin, sex);
+    if(not isValidSex(sex.at(0)) or sex.length()!=1)
     {
-        cout<<"\nInvalid Sex!\n";
+        std::cout<<"\nInvalid Sex!\n";
         goto sexlb1;
     }
     datelb1:
-    cout<<"\nEnter date of birth (mm dd yyyy): ";
-    cin.clear();cin.sync();
-    cin>>dob.mm>>dob.dd>>dob.yyyy;
+    std::cout<<"\nEnter date of birth (dd mm yyyy): ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin>>dob.dd>>dob.mm>>dob.yyyy;
     if(not isValidDate(dob))
     {
-        cout<<"\nInvalid Date!\n";
+        std::cout<<"\nInvalid Date!\n";
         goto datelb1;
     }
     fatherlb1:
-    cout<<"\nEnter father's name: ";
-    cin.clear();cin.sync();
-    cin.get(father, maxlen);
-    if(not isValidName(string(father)))
+    std::cout<<"\nEnter father's name: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, father);
+    if(not isValidName(father))
     {
-        cout<<"\nInvalid Name!\n";
+        std::cout<<"\nInvalid Name!\n";
         goto fatherlb1;
     }
     addresslb1:
-    cout<<"\nEnter address: ";
-    cin.clear();cin.sync();
-    cin.get(address, maxlen);
-    if(not isValidAddress(string(address)))
+    std::cout<<"\nEnter address: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, address);
+    if(not isValidAddress(address))
     {
-        cout<<"\nInvalid Address!\n";
+        std::cout<<"\nInvalid Address!\n";
         goto addresslb1;
     }
-    cout<<"\nEnter crime committed: ";
-    cin.clear();cin.sync();
-    cin.get(offense, maxlen);
+    std::cout<<"\nEnter crime committed: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, offense);
     bloodlb1:
-    cout<<"\nEnter blood group: ";
-    cin.clear();cin.sync();
-    cin.get(blood, 4);
-    if(not isValidBlood(string(blood)))
+    std::cout<<"\nEnter blood group: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, blood);
+    if(not isValidBlood(std::string(blood)))
     {
-        cout<<"\nInvalid Blood!\n";
+        std::cout<<"\nInvalid Blood!\n";
         goto bloodlb1;
     }
-    cout<<"\nEnter charges: ";
-    cin.clear();cin.sync();
-    cin.get(crime_codes, maxlen);
-    cout<<"\nEnter reward on the criminal (Rs.): ";
-    cin.clear();cin.sync();
-    cin>>reward;
+    std::cout<<"\nEnter charges: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, crime_codes);
+    std::cout<<"\nEnter reward on the criminal (Rs.): ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin>>reward;
     _encode();
     _generateUID();
-    ofstream ofile("cbi", ios::app|ios::binary);
-    ofile.write((char*)&criminal, sizeof(criminal));
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::ofstream ofile((cp/"cbi").string(), std::ios::app);
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::ofstream ofile(cp/"cbi", std::ios::app);
+    #endif
+    ofile<<criminal;
     ofile.close();
 }
 
 void criminal_record::_delete()
 {
-    unsigned int _uid;
-    cout<<"Enter the uid of the criminal whose record you want to delete: ";
-    cin.clear();cin.sync();
-    cin>>_uid;
-    ifstream ifile("cbi", ios::binary);
-    ofstream ofile("new", ios::app|ios::binary);
-    ifile.seekg(0, ios::beg);
-    ifile.read((char*)&criminal, sizeof(criminal));
+    unsigned long long int _uid;
+    bool isAnyChangeMade=false;
+    std::cout<<"\nEnter the uid of the criminal whose record you want to delete: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin>>_uid;
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+        std::ifstream ifile((cp/"cbi").string());
+        std::ofstream ofile((cp/"new").string(), std::ios::trunc);
+    #elif _GCC_VERSION_MORE_THAN_8_
+        std::ifstream ifile(cp/"cbi");
+        std::ofstream ofile(cp/"new", std::ios::trunc);
+    #endif
+    ifile.seekg(0, std::ios::beg);
     while(ifile)
     {
+        ifile>>criminal;
         if(_uid!=uid)
-            ofile.write((char*)&criminal, sizeof(criminal));
-        ifile.read((char*)&criminal, sizeof(criminal));
+        {
+            ofile<<criminal;
+            isAnyChangeMade=true;
+        }
     }
     ifile.close();
     ofile.close();
-    remove("cbi");
-    rename("new", "cbi");
+    fs::remove(cp/"cbi");
+    fs::rename(cp/"new", cp/"cbi");
+    if(not isAnyChangeMade)
+        std::cout<<"\nThe provided UID doesn't point to any of the criminals!"
 }
 
 void criminal_record::_modify()
 {
-    string str;
-    unsigned int _uid;
+    std::string str;
+    unsigned long long int _uid;
     bool found=false;
     char choice;
-    fstream f("cbi", ios::in|ios::out|ios::binary);
-    f.seekg(0, ios::beg);
-    cout<<"\nEnter uid of the criminal whose record you want to modify: ";
-    cin.clear();cin.sync();
-    cin>>_uid;
-    cout<<endl;
-    f.read((char*)&criminal, sizeof(criminal));
-    int a=f.tellg();
+    #ifdef _GCC_VERSION_LESS_THAN_8_
+    std::fstream f((cp/"cbi").string(), std::ios::in|std::ios::out);
+    #elif _GCC_VERSION_MORE_THAN_8_
+    std::fstream f(cp/"cbi", std::ios::in|std::ios::out);
+    #endif
+    f.seekg(0, std::ios::beg);
+    std::cout<<"\nEnter uid of the criminal whose record you want to modify: ";
+    std::cin>>_uid;
+    std::cout<<'\n';
     while(f)
     {
+        f>>criminal;
         if(_uid==uid)
         {
             found=true;
@@ -263,112 +291,110 @@ void criminal_record::_modify()
                         str="reward on criminal";
                         break;
                 }
-                str=string("Press ")+char(i+48)+string(" to change ")+str;
+                str=std::string("Press ")+char(i+48)+std::string(" to change ")+str;
                 Align0(str, padding_horizontal);
             }
             _decode();
             beginning:
-            cout<<endl;
+            std::cout<<'\n';
             choice=_getch();
             putch(choice);
-            cout<<endl<<endl;;
+            std::cout<<'\n'<<'\n';;
             switch(choice)
             {
                 case '1':
                     namelb2:
-                    cout<<"Enter new name: ";
-                    cin.clear(); cin.sync();
-                    cin.get(name, maxlen);
-                    if(not isValidName(string(name)))
+                    std::cout<<"Enter new name: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::getline(std::cin, name);
+                    if(not isValidName(name))
                     {
-                        cout<<"\nInvalid Name!";
+                        std::cout<<"\nInvalid Name!";
                         goto namelb2;
                     }
                     break;
                 case '2':
                     sexlb2:
-                    cout<<"Enter new sex: ";
-                    cin.clear(); cin.sync();
-                    cin.get(sex, 2);
+                    std::cout<<"Enter new sex: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::getline(std::cin, sex);
                     if(not isValidSex(sex[0]))
                     {
-                        cout<<"\nInvalid Sex!";
+                        std::cout<<"\nInvalid Sex!";
                         goto sexlb2;
                     }
                     break;
                 case '3':
                     doblb2:
-                    cout<<"Enter new date of birth (mm dd yyyy): ";
-                    cin.clear(); cin.sync();
-                    cin>>dob.mm>>dob.dd>>dob.yyyy;
+                    std::cout<<"Enter new date of birth (dd mm yyyy): ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin>>dob.mm>>dob.dd>>dob.yyyy;
                     if(not isValidDate(dob))
                     {
-                        cout<<"\nInvalid Date!";
+                        std::cout<<"\nInvalid Date!";
                         goto sexlb2;
                     }
                     break;
                 case '4':
                     fatherlb2:
-                    cout<<"Enter new father's name: ";
-                    cin.clear(); cin.sync();
-                    cin.get(father, maxlen);
-                    if(not isValidName(string(father)))
+                    std::cout<<"Enter new father's name: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::getline(std::cin, father);
+                    if(not isValidName(father))
                     {
-                        cout<<"\nInvalid Name!";
+                        std::cout<<"\nInvalid Name!";
                         goto fatherlb2;
                     }
                     break;
                 case '5':
                     addresslb2:
-                    cout<<"Enter new address: ";
-                    cin.clear(); cin.sync();
-                    cin.get(address, maxlen);
-                    if(not isValidAddress(string(address)))
+                    std::cout<<"Enter new address: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::getline(std::cin, address);
+                    if(not isValidAddress(address))
                     {
-                        cout<<"\nInvalid Address!";
+                        std::cout<<"\nInvalid Address!";
                         goto addresslb2;
                     }
                     break;
                 case '6':
-                    cout<<"Enter new crimes committed: ";
-                    cin.clear(); cin.sync();
-                    cin.get(offense, maxlen);
+                    std::cout<<"Enter new crimes committed: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::getline(std::cin, offense);
                     break;
                 case '7':
                     bloodlb2:
-                    cout<<"Enter new blood group: ";
-                    cin.clear(); cin.sync();
-                    cin.get(blood, 3);
-                    if(not isValidBlood(string(blood)))
+                    std::cout<<"Enter new blood group: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::getline(std::cin, blood);
+                    if(not isValidBlood(blood))
                     {
-                        cout<<"\nInvalid Blood Group!";
+                        std::cout<<"\nInvalid Blood Group!";
                         goto bloodlb2;
                     }
                     break;
                 case '8':
-                    cout<<"Enter new charges: ";
-                    cin.clear(); cin.sync();
-                    cin.get(crime_codes, maxlen);
+                    std::cout<<"Enter new charges: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::getline(std::cin, crime_codes);
                     break;
                 case '9':
-                    cout<<"Enter new reward (Rs.): ";
-                    cin.clear(); cin.sync();
-                    cin>>reward;
+                    std::cout<<"Enter new reward (Rs.): ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin>>reward;
                     break;
                 default:
-                    cout<<"\nWrong Choice!";
+                    std::cout<<"\nWrong Choice!";
                     goto beginning;
                     break;
             }
             _encode();
-            f.seekg(a-sizeof(criminal), ios::beg);
-            f.write((char*)&criminal, sizeof(criminal));
+            f.seekg(criminal.length, std::ios::cur);
+            f<<criminal;
             break;
         }
-        f.read((char*)&criminal, sizeof(criminal));
-        a=f.tellg();
     }
     if(found==false)
-        cout<<"\nNo record found!";
+        std::cout<<"\nNo record found!";
     f.close();
 }
