@@ -1,41 +1,44 @@
+#include "callers.h"
+
 credentials caller1(bool existing_user=true, bool modify=false)
 {
-    hidecursor();
-    string str1="Enter Credentials : ";
+    rlutil::hidecursor();
+    std::string str1="Enter Credentials : ";
     if(not existing_user)
-        str1="Enter Credentials of the New User : ";
-    string str2="UserID : ";
-    string str3="Password : ";
+        str1="Enter Credentials of the New User :";
+    std::string str2="UserID : ";
+    std::string str3="Password : ";
     int i=0;
-    char arr1[11], arr2[11], arr3[11], arr4[11];
+    credentials logon;
     Load0(str1, str2, 0);
-    for(i=0; i<10; i++)
+    for(i=0; i<32; i++)
     {
-        arr1[i]=_getch();
-        if(arr1[i]=='\n')
+        
+        logon.user += getch();
+        if(logon.user[i]=='\n')
             break;
-        str2+=arr1[i];
+        str2 += logon.user[i]);
         Load0(str1, str2, 1);
     }
     Load0(str1, str2, str3, 0);
-    for(i=0; i<10; i++)
+    for(i=0; i<32; i++)
     {
-        arr2[i]=_getch();
-        if(arr2[i]=='\n')
+        logon.pwd += getch();
+        if(logon.pwd[i]=='\n')
             break;
-        str3+='*';
+        str3 += '*';
         Load0(str1, str2, str3, 1);
     }
     if(modify)
     {
         str3="Enter New Password : ";
         Load0(str1, str2, str3, 0);
-        for(int i=0; i<10; i++)
+        for(int i=0; i<32; i++)
         {
-            arr3[i]=_getch();
-            if(arr3[i]=='\n')
+            logon.newpwd += getch();
+            if(logon.newpwd[i]=='\n')
                 break;
-            str3+='*';
+            str3 += '*';
             Load0(str1, str2, str3, 1);
         }
     }
@@ -45,48 +48,41 @@ credentials caller1(bool existing_user=true, bool modify=false)
         Load0(str1, str2, str3, 0);
         for(int i=0; i<10; i++)
         {
-            arr4[i]=_getch();
-            if(arr4[i]=='\n')
+            logon + getch();
+            if(logon.confirm[i]=='\n')
                 break;
-            str3+='*';
+            str3 += '*';
             Load0(str1, str2, str3, 1);
         }
     }
-    arr1[10]=arr2[10]=arr3[10]=arr4[10]='\0';
-    credentials logon;
-    logon.user=arr1;
-    logon.pwd=arr2;
-    if(modify)
-        logon.newpwd=arr3;
-    if(not existing_user or modify)
-        logon.confirm=arr4;
     return logon;
 }
 
-void caller2(bool userisAdmin, bool bipass)
+void caller2(bool userisAdmin, bool bypass)
 {
     int i=0;
-    string str="Welcome!";
-    if(not bipass)
+    std::string str="Welcome!";
+    if(not bypass)
     {
         Load0(str, 0, 1);
-        sleep_until(system_clock::now()+seconds(1));
+        std::this_thread::sleep_for(1s);
         str="Loading";
         Load0(str, 1, 1, false);
         for(i=0; i<4; i++)
         {
-            cout<<'.';
-            sleep_until(system_clock::now() + seconds(1));
+            std::cout<<'.';
+            std::this_thread::sleep_for(1s);
         }
     }
-    system("cls");
+    rlutil::cls();
     str="Central Investigation Department";
     SetWindow(80, 20, true);
-    cout<<endl;
+    std::cout<<'\n';
     Align0(str, -2);
-    cout<<endl;
-    for(i=0; i<console_width; i++) cout<<'*';
-    cout<<'\n';
+    std::cout<<'\n';
+    for(i=0; i<console_width; i++) 
+        std::cout<<'*';
+    std::cout<<'\n';
     for(i=1; i<=5; i++)
     {
         switch(i)
@@ -107,16 +103,17 @@ void caller2(bool userisAdmin, bool bipass)
                 str="5. Modify a criminal record";
                 break;
         }
-        cout<<'*';
+        std::cout<<'*';
         Align0(str, (str.length()/2)-padding_horizontal, false);
-        cout<<setw((console_width-str.length())/2)<<'*'<<endl<<endl;
+        std::cout<<std::setw((console_width-str.length())/2)<<'*\n\n';
     }
     if(userisAdmin)
     {
         str="6. Open the CID admin menu ";
-        cout<<'*';
+        std::cout<<'*';
         Align0(str, (str.length()/2)-padding_horizontal, false);
-        cout<<setw((console_width-str.length())/2)<<'*'<<endl<<endl;
+        std::cout<<std::setw((console_width-str.length())/2)<<'*\n\n';
     }
-    for(i=0; i<console_width; i++) cout<<'*';
+    for(i=0; i<console_width; i++) 
+        std::cout<<'*';
 }
