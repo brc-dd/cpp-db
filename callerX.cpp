@@ -1,12 +1,12 @@
 bool caller3(bool userisAdmin)
 {
     char choice, ch;
-    bool bipass;
+    bool bypass;
     do
     {
-        cout<<"\n\nEnter your choice: ";
-        cin>>choice;
-        cout<<endl;
+        std::cout<<"\n\nEnter your choice: ";
+        std::cin>>choice;
+        std::cout<<'\n';
         switch(choice)
         {
         case '1':
@@ -28,19 +28,19 @@ bool caller3(bool userisAdmin)
             if(userisAdmin)
             {
                 AdminMenuLoader(false);
-                bipass=true;
+                bypass=true;
                 ch='Y';
                 break;
             }
         default:
-            cout<<"\nWrong Choice!";
+            std::cout<<"\nWrong Choice!";
             break;
         }
-        if(not bipass)
+        if(not bypass)
         {
-            cout<<"\n\nContinue? (y/n) ";
-            cin.clear();cin.sync();
-            cin.get(ch);
+            std::cout<<"\n\nContinue? (y/n) ";
+            std::std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.get(ch);
         }
         if(ch=='Y' or ch=='y')
             return true;
