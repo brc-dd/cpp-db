@@ -1,42 +1,5 @@
 #include "loaders.h"
 
-void ClearScreen()
-{
-    HANDLE                     hStdOut;
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    DWORD                      count;
-    DWORD                      cellCount;
-    COORD                      homeCoords = { 0, 0 };
-
-    hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
-    if (hStdOut == INVALID_HANDLE_VALUE) return;
-
-    /* Get the number of cells in the current buffer */
-    if (!GetConsoleScreenBufferInfo( hStdOut, &csbi )) return;
-    cellCount = csbi.dwSize.X *csbi.dwSize.Y;
-
-    /* Fill the entire buffer with spaces */
-    if (!FillConsoleOutputCharacter(
-        hStdOut,
-        (TCHAR) ' ',
-        cellCount,
-        homeCoords,
-        &count
-    )) return;
-
-    /* Fill the entire buffer with the current colors and attributes */
-    if (!FillConsoleOutputAttribute(
-        hStdOut,
-        csbi.wAttributes,
-        cellCount,
-        homeCoords,
-        &count
-    )) return;
-
-    /* Move the cursor home */
-    SetConsoleCursorPosition( hStdOut, homeCoords );
-}
-
 void SetWindow(int Width, int Height, bool enableScrollBar)
 {
     _COORD coord;
@@ -48,7 +11,7 @@ void SetWindow(int Width, int Height, bool enableScrollBar)
     Rect.Bottom = Height - 1;
     Rect.Right = Width - 1;
     if(enableScrollBar)
-        coord.Y=300;                                      // Enable Scroll Bar
+        coord.Y = 300;                                      // Enable Scroll Bar
     HANDLE Handle = GetStdHandle(STD_OUTPUT_HANDLE);      // Get Handle
     SetConsoleScreenBufferSize(Handle, coord);            // Set Buffer Size
     SetConsoleWindowInfo(Handle, TRUE, &Rect);            // Set Window Size
@@ -66,7 +29,7 @@ void Align0(std::string str, int i, bool change_line)
 
 void Load0(std::string str, int k, int padding_change, bool change_line)
 {
-    ClearScreen();
+    rlutil::cls();
     for(int i=0; i<padding_vertical-padding_change; i++)
         std::cout<<'\n';
     Align0(str, k, change_line);
