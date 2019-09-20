@@ -12,4 +12,8 @@ compilation process of every file needs to written\
 added modified versions of loaders.h and loaders.cpp\
 added modified versions of validators.h and validators.cpp\
 added modified versions of credentials.h and credentials.cpp\
-added modified versions of criminals.h and criminals.cpp
+added modified versions of criminals.h and criminals.cpp\
+\.\
+\.\
+\.\
+performing link analysis...
