@@ -1,8 +1,7 @@
 #pragma once
+#pragma GCC diagnostic ignored "-Wnarrowing"
 
-#include <algorithm>
-#include <cctype>
-#include <string>
+#include <bits/stdc++.h>
 
 struct date
 {

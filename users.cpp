@@ -1,5 +1,7 @@
 #include "users.h"
 
+extern xCredentials xDefault;
+
 void user_create()
 {
     credentials new_user=caller1(false);
@@ -34,7 +36,6 @@ void user_create()
         Load0(str, 0, 1);
         getch();
     }
-    xDefault.userisAdmin()=true;
     AdminMenuLoader(true);
 }
 
@@ -42,7 +43,7 @@ void user_delete()
 {
     std::string query;
     std::cout<<"\nEnter the name of the user you want to delete: ";
-    cin>>query;
+    std::cin>>query;
     xDefault.__init__(query, std::string(" "));
     if(xDefault.userisAdmin())
         std::cout<<"\nSorry admin account cannot be deleted!";
@@ -51,7 +52,6 @@ void user_delete()
     else
         std::cout<<"\nNo such user exists!";
     getch();
-    xDefault.userisAdmin()=true;
     AdminMenuLoader(true);
 }
 
@@ -63,7 +63,7 @@ void user_modify()
     for(int i=0; i<4; i++)
     {
         std::cout<<'.';
-        sleep_until(system_clock::now() + seconds(1));
+        std::this_thread::sleep_for(1s);
     }
     xDefault.__init__(modified_user.user, modified_user.pwd);
     if(xDefault._Check(false))
@@ -88,6 +88,5 @@ void user_modify()
         Load0(str, 0, 1);
         getch();
     }
-    xDefault.userisAdmin()=true;
     AdminMenuLoader(true);
 }

@@ -11,7 +11,7 @@ void SetWindow(int Width, int Height, bool enableScrollBar)
     Rect.Bottom = Height - 1;
     Rect.Right = Width - 1;
     if(enableScrollBar)
-        coord.Y = 300;                                      // Enable Scroll Bar
+        coord.Y = 300;                                    // Enable Scroll Bar
     HANDLE Handle = GetStdHandle(STD_OUTPUT_HANDLE);      // Get Handle
     SetConsoleScreenBufferSize(Handle, coord);            // Set Buffer Size
     SetConsoleWindowInfo(Handle, TRUE, &Rect);            // Set Window Size

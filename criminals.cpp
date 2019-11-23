@@ -1,7 +1,11 @@
 #include "criminals.h"
 
 namespace ch = std::chrono;
-fs::path cp=fs::current_path();
+
+//fs::path cp=fs::current_path();
+
+
+extern fs::path cp;
 
 criminal_record criminal;
 
@@ -37,9 +41,9 @@ std::istream& operator>>(std::istream& in,  criminal_record& x)
     x.length = x.name.length()+x.father.length()+x.address.length()+x.offense.length()
             + x.crime_codes.length()+x.blood.length()+x.sex.length()+dob.length()+reward.length()
             + uid.length()+10;
-    x.dob = decrypt(stringToDate(dob));
-    x.reward = decrypt(std::stoul(reward));
-    x.uid = decrypt(std::stoull(uid));
+    x.dob = stringToDate(decrypt(dob));
+    x.reward = std::stoul(decrypt(reward));
+    x.uid = std::stoull(decrypt(uid));
 	return in;
 }
 
@@ -144,8 +148,8 @@ void criminal_record::_write()
     sexlb1:
     std::cout<<"\nSex: ";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    sd::getline(std::cin, sex);
-    if(not isValidSex(sex.at(0)) or sex.length()!=1)
+    std::getline(std::cin, sex);
+    if(not isValidSex(sex[0]) or sex.length()!=1)
     {
         std::cout<<"\nInvalid Sex!\n";
         goto sexlb1;
@@ -235,7 +239,7 @@ void criminal_record::_delete()
     fs::remove(cp/"cbi");
     fs::rename(cp/"new", cp/"cbi");
     if(not isAnyChangeMade)
-        std::cout<<"\nThe provided UID doesn't point to any of the criminals!"
+        std::cout<<"\nThe provided UID doesn't point to any of the criminals!";
 }
 
 void criminal_record::_modify()

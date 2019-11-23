@@ -1,6 +1,6 @@
 #pragma once
 
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 #include <cryptopp/aes.h>
 #include <cryptopp/filters.h>

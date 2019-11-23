@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef iterateOver
 #define iterateOver 1
 #endif
@@ -30,4 +32,10 @@
 
 #include <bits/stdc++.h>
 
-std::string delim = "GHIJKLMNOPQRSTUVWXYZ";
+#ifdef _GCC_VERSION_LESS_THAN_8_
+    #include <experimental/filesystem>
+    namespace fs = std::experimental::filesystem;
+#elif _GCC_VERSION_MORE_THAN_8_
+    #include <filesystem>
+    namespace fs = std::filesystem;
+#endif

@@ -28,7 +28,7 @@ public:
     void __init__(std::string, std::string);
     friend std::ostream& operator<<(std::ostream&, const xCredentials&);
     friend std::istream& operator>>(std::istream&,  xCredentials&);
-    bool _Check(bool);
+    bool _Check(bool doLog=true);
     void _Save();
     bool _isUserUnique();
     bool _Delete();

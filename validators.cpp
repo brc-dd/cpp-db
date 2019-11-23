@@ -28,23 +28,24 @@ std::string to_upper(std::string str)
     return str;
 }
 
-std::istream& getline(std::istream& input, std::string& str, std::string delim)
+std::istream& getline(std::istream& input, std::string& str, std::string _delim)
 {
     str.erase();
     char ch;
     while(input and str.length()<str.max_size())
     {
         input.get(ch);
-        for(int i=0; i<delim.length(); i++)
+        for(long unsigned int i=0; i<_delim.length(); i++)
         {
-            if(ch==delim.at(i))
+            if(ch==_delim[i])
                 return input;
         }
-        str.append(1, ch);
+        str.push_back(ch);
     }
     input.setstate(std::ios::failbit);
     return input;
 }
+
 
 bool isValidName(std::string name)
 {

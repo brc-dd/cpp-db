@@ -2,14 +2,16 @@
 
 xCredentials xDefault;
 
-fs::path cp=fs::current_path();
+//fs::path cp=fs::current_path();
 
-inline bool xCredentials::userisAdmin()
+extern fs::path cp;
+
+bool xCredentials::userisAdmin()
 {
     return (user==encrypt("0xAdminCID"));
 }
 
-inline void xCredentials::__init__(std::string u, std::string p)
+void xCredentials::__init__(std::string u, std::string p)
 {
     user=u;
     pwd=p;
@@ -29,7 +31,7 @@ std::istream& operator>>(std::istream& in,  xCredentials& x)
 	return in;
 }
 
-bool xCredentials::_Check(bool doLog=true)
+bool xCredentials::_Check(bool doLog)
 {
     std::string u=user, p=pwd;
     bool xSet=false;

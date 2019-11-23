@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 
-#include <duthomhas/csprng.hpp>
+#include "duthomhas/csprng.hpp"
 
 #define _GCC_VERSION_LESS_THAN_8_   //temp line for mingw-w64\\i686-7.3.0-posix-dwarf-rt_v5-rev0 added due to a bug in some gcc versions
 
@@ -37,13 +37,14 @@ int main()
     }
     
     #ifdef _GCC_VERSION_LESS_THAN_8_
-        std::ofstream ofile((cp/"constants.h").string(), std::ios::app);
+        std::ofstream ofile((cp/"constants.cpp").string(), std::ios::app);
     #elif _GCC_VERSION_MORE_THAN_8_
-        std::ofstream ofile(cp/"constants.h", std::ios::app);
+        std::ofstream ofile(cp/"constants.cpp", std::ios::app);
     #endif
     
     ofile<<"\nstd::string _key_ = \""<<_key_<<"\";"
-         <<"\nstd::string _iv_ = \""<<_iv_<<"\";";
+         <<"\nstd::string _iv_ = \""<<_iv_<<"\";"
+         <<"\n";
     ofile.close();
     return 0;
 }

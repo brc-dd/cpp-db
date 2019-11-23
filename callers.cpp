@@ -1,6 +1,8 @@
 #include "callers.h"
 
-credentials caller1(bool existing_user=true, bool modify=false)
+extern criminal_record criminal;
+
+credentials caller1(bool existing_user, bool modify)
 {
     rlutil::hidecursor();
     std::string str1="Enter Credentials : ";
@@ -8,23 +10,22 @@ credentials caller1(bool existing_user=true, bool modify=false)
         str1="Enter Credentials of the New User :";
     std::string str2="UserID : ";
     std::string str3="Password : ";
-    int i=0;
     credentials logon;
     Load0(str1, str2, 0);
-    for(i=0; i<32; i++)
+    for(int i=0; i<32; i++)
     {
         
         logon.user += getch();
-        if(logon.user[i]=='\n')
+        if(logon.user[i]=='\r')
             break;
-        str2 += logon.user[i]);
+        str2 += logon.user[i];
         Load0(str1, str2, 1);
     }
     Load0(str1, str2, str3, 0);
-    for(i=0; i<32; i++)
+    for(int i=0; i<32; i++)
     {
         logon.pwd += getch();
-        if(logon.pwd[i]=='\n')
+        if(logon.pwd[i]=='\r')
             break;
         str3 += '*';
         Load0(str1, str2, str3, 1);
@@ -36,7 +37,7 @@ credentials caller1(bool existing_user=true, bool modify=false)
         for(int i=0; i<32; i++)
         {
             logon.newpwd += getch();
-            if(logon.newpwd[i]=='\n')
+            if(logon.newpwd[i]=='\r')
                 break;
             str3 += '*';
             Load0(str1, str2, str3, 1);
@@ -48,8 +49,8 @@ credentials caller1(bool existing_user=true, bool modify=false)
         Load0(str1, str2, str3, 0);
         for(int i=0; i<10; i++)
         {
-            logon + getch();
-            if(logon.confirm[i]=='\n')
+            logon.confirm += getch();
+            if(logon.confirm[i]=='\r')
                 break;
             str3 += '*';
             Load0(str1, str2, str3, 1);
@@ -105,15 +106,66 @@ void caller2(bool userisAdmin, bool bypass)
         }
         std::cout<<'*';
         Align0(str, (str.length()/2)-padding_horizontal, false);
-        std::cout<<std::setw((console_width-str.length())/2)<<'*\n\n';
+        std::cout<<std::setw((console_width-str.length())/2)<<"*\n\n";
     }
     if(userisAdmin)
     {
         str="6. Open the CID admin menu ";
         std::cout<<'*';
         Align0(str, (str.length()/2)-padding_horizontal, false);
-        std::cout<<std::setw((console_width-str.length())/2)<<'*\n\n';
+        std::cout<<std::setw((console_width-str.length())/2)<<"*\n\n";
     }
     for(i=0; i<console_width; i++) 
         std::cout<<'*';
+}
+
+bool caller3(bool userisAdmin)
+{
+    char choice, ch;
+    bool bypass;
+    do
+    {
+        std::cout<<"\n\nEnter your choice: ";
+        std::cin>>choice;
+        std::cout<<'\n';
+        switch(choice)
+        {
+        case '1':
+            criminal._read();
+            break;
+        case '2':
+            criminal._write();
+            break;
+        case '3':
+            criminal._search();
+            break;
+        case '4':
+            criminal._delete();
+            break;
+        case '5':
+            criminal._modify();
+            break;
+        case '6':
+            if(userisAdmin)
+            {
+                AdminMenuLoader(false);
+                bypass=true;
+                ch='Y';
+                break;
+            }
+        default:
+            std::cout<<"\nWrong Choice!";
+            break;
+        }
+        if(not bypass)
+        {
+            std::cout<<"\n\nContinue? (y/n) ";
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.get(ch);
+        }
+        if(ch=='Y' or ch=='y')
+            return true;
+        else break;
+    } while(true);
+    return false;
 }

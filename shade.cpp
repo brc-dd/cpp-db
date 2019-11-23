@@ -7,10 +7,10 @@ std::string encrypt(std::string plain)
     extern std::string _key_, _iv_;
 
     for(int i=0; i<CryptoPP::AES::DEFAULT_KEYLENGTH; i++)
-        key[i] = _key_.at(i);
+        key[i] = _key_[i];
 
     for(int i=0; i<CryptoPP::AES::BLOCKSIZE; i++)
-        iv[i] = _iv_.at(i);
+        iv[i] = _iv_[i];
     
     std::string cipher;
 
@@ -32,10 +32,10 @@ std::string decrypt(std::string cipher)
     extern std::string _key_, _iv_;
 
     for(int i=0; i<CryptoPP::AES::DEFAULT_KEYLENGTH; i++)
-        key[i] = _key_.at(i);
+        key[i] = _key_[i];
 
     for(int i=0; i<CryptoPP::AES::BLOCKSIZE; i++)
-        iv[i] = _iv_.at(i);
+        iv[i] = _iv_[i];
     
     std::string recovered;
 
@@ -82,5 +82,5 @@ char someRANDOMnonHexChar()
 {
     srand(time(0));
     extern std::string delim;
-    return delim.at(rand()%20);
+    return delim[rand()%20];
 }
