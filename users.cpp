@@ -44,6 +44,7 @@ void user_delete()
     std::string query;
     std::cout<<"\nEnter the name of the user you want to delete: ";
     std::cin>>query;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     xDefault.__init__(encrypt(query), " ");
     if(xDefault.userisAdmin())
         std::cout<<"\nSorry admin account cannot be deleted!";

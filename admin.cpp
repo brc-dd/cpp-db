@@ -9,6 +9,7 @@ void AdminChoiceProcessor(bool bypass)
         {
             std::cout<<"\n\nEnter your choice: ";
             std::cin>>ch;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout<<'\n';
             switch(ch)
             {
@@ -35,8 +36,8 @@ void AdminChoiceProcessor(bool bypass)
         else
         {
             std::cout<<"\n\nContinue? (y/n) ";
+            std::cin>>ch;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cin.get(ch);
             if(ch=='Y' or ch=='y')
                 bypass=false;
             else break;

@@ -139,6 +139,7 @@ bool caller3(bool userisAdmin)
     {
         std::cout << "\n\nEnter your choice: ";
         std::cin >> choice;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << '\n';
         switch (choice)
         {
@@ -172,8 +173,8 @@ bool caller3(bool userisAdmin)
         if (not bypass)
         {
             std::cout << "\n\nContinue? (y/n) ";
+            std::cin >> ch;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cin.get(ch);
         }
         if (ch == 'Y' or ch == 'y')
             return true;
