@@ -20,10 +20,6 @@
 #define padding_vertical 9
 #endif
 
-#ifndef maxlen
-#define maxlen 256
-#endif
-
 /* Temporary Code Block Begin */
 #ifndef _GCC_VERSION_LESS_THAN_8_
 #define _GCC_VERSION_LESS_THAN_8_
