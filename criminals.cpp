@@ -233,10 +233,9 @@ void criminal_record::_delete()
     {
         ifile >> criminal;
         if (_uid != uid)
-        {
             ofile << criminal;
+        else
             isAnyChangeMade = true;
-        }
     }
     ifile.close();
     ofile.close();
@@ -402,7 +401,7 @@ void criminal_record::_modify()
                 break;
             }
             _encode();
-            f.seekg(criminal.length, std::ios::cur);
+            f.seekg(-criminal.length, std::ios::cur);
             f << criminal;
             break;
         }
