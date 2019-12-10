@@ -8,6 +8,7 @@
 #include <cryptopp/modes.h>
 
 #include "constants.h"
+#include "duthomhas/csprng.hpp"
 
 std::string encrypt(std::string);
 std::string decrypt(std::string);

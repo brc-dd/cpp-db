@@ -95,7 +95,7 @@ bool xCredentials::_isUserUnique()
             return false;
     }
     ifile.close();
-    __init__(encrypt(u), encrypt(p));
+    __init__(u, p);
     return true;
 }
 
@@ -140,7 +140,7 @@ void xCredentials::_Modify(std::string u, std::string p)
         if(u==user)
         {
             f.seekg(-(xDefault.user.length()+xDefault.pwd.length()+2), std::ios::cur);
-            xDefault.__init__(encrypt(u), encrypt(p));
+            xDefault.__init__(u, p);
             f<<xDefault;
             break;
         }

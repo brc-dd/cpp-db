@@ -42,7 +42,10 @@ int main()
         std::ofstream ofile(cp/"constants.cpp", std::ios::app);
     #endif
     
-    ofile<<"\nstd::string _key_ = \""<<_key_<<"\";"
+    ofile<<"\n#include \"constants.h\""
+         <<"\nfs::path cp=fs::current_path();"
+         <<"\nstd::string delim = \"GHIJKLMNOPQRSTUVWXYZ\";"   
+         <<"\nstd::string _key_ = \""<<_key_<<"\";"
          <<"\nstd::string _iv_ = \""<<_iv_<<"\";"
          <<"\n";
     ofile.close();

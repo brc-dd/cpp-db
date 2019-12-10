@@ -17,7 +17,7 @@ int main()
     bool bypass = false;
     credentials logon = caller1();
     extern xCredentials xDefault;
-    xDefault.__init__(logon.user, logon.pwd);
+    xDefault.__init__(encrypt(logon.user), encrypt(logon.pwd));
     if(not xDefault._Check()) return 1;
     std::this_thread::sleep_for(1s);
     lb:

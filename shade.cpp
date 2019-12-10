@@ -80,7 +80,7 @@ std::string decode(std::string orig)
 
 char someRANDOMnonHexChar()
 {
-    srand(time(0));
+    duthomhas::csprng rng;
     extern std::string delim;
-    return delim[rand()%20];
+    return delim[rng()%20];
 }
