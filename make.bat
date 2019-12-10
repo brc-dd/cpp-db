@@ -11,4 +11,3 @@ g++ main.cpp admin.cpp callers.cpp constants.cpp credentials.cpp criminals.cpp c
 @echo you're ready to go...
 del "constants.cpp"
 pause
-REM exit 0
