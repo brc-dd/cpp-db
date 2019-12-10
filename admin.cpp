@@ -23,7 +23,8 @@ void AdminChoiceProcessor(bool bypass)
                     user_modify();
                     break;
                 case '4':
-                    std::cout<<"\nFeature under development!";
+                    std::cout<<"\n\n";
+                    system("type logs.dat");
                     break;
                 case '5':
                     return;
@@ -85,7 +86,7 @@ void AdminMenuLoader(bool bypass)
                 str="3. Modify user's password";
                 break;
             case 4:
-                str="4. Change admin email-id ";
+                str="4. Print access logs     ";
                 break;
             case 5:
                 str="5. Return to main menu   ";
