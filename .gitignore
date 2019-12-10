@@ -16,7 +16,7 @@
 *.dylib
 *.dll
 
-# Fortran module files
+# Fortran Module Files
 *.mod
 *.smod
 
@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Data files
+*.dat
