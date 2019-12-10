@@ -32,7 +32,7 @@ std::istream& getline(std::istream& input, std::string& str, std::string _delim)
 {
     str.erase();
     char ch;
-    while(input.get(ch) and str.length()<str.max_size())
+    while(input>>ch and str.length()<str.max_size())
     {
         for(long unsigned int i=0; i<_delim.length(); i++)
         {
