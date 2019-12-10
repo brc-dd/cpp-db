@@ -4,3 +4,5 @@ most of the bugs are still unknown\
 but we know what is working correctly:\
 1\.     Compilation process
 2\.     user account creation
+3\.     displaying criminal details
+4\.     adding criminal details

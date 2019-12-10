@@ -4,7 +4,6 @@ namespace ch = std::chrono;
 
 //fs::path cp=fs::current_path();
 
-
 extern fs::path cp;
 
 criminal_record criminal;
@@ -29,6 +28,8 @@ std::istream& operator>>(std::istream& in,  criminal_record& x)
     extern std::string delim;
     std::string dob, reward, uid;
     getline(in, x.name, delim);
+    if(x.name.empty())
+        return in;
     getline(in, x.father, delim);
     getline(in, x.address, delim);
     getline(in, x.offense, delim);
@@ -96,13 +97,16 @@ void criminal_record::_read()
     #elif _GCC_VERSION_MORE_THAN_8_
         std::ifstream ifile(cp/"cbi");
     #endif
+    bool present =  false;
     ifile.seekg(0, std::ios::beg);
-    while(ifile)
+    while(ifile>>criminal)
     {
-        ifile>>criminal;
         _display();
         std::cout<<'\n';
+        present = true;
     }
+    if(not present)
+        std::cout<<"No details present on this device!\n";
     ifile.close();
 }
 
@@ -336,7 +340,7 @@ void criminal_record::_modify()
                     if(not isValidDate(dob))
                     {
                         std::cout<<"\nInvalid Date!";
-                        goto sexlb2;
+                        goto doblb2;
                     }
                     break;
                 case '4':
