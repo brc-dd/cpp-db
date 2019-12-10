@@ -89,9 +89,9 @@ void criminal_record::_display()
 void criminal_record::_read()
 {
 #ifdef _GCC_VERSION_LESS_THAN_8_
-    std::ifstream ifile((cp / "cbi").string());
+    std::ifstream ifile((cp / "cbi.dat").string());
 #elif _GCC_VERSION_MORE_THAN_8_
-    std::ifstream ifile(cp / "cbi");
+    std::ifstream ifile(cp / "cbi.dat");
 #endif
     bool present = false;
     ifile.seekg(0, std::ios::beg);
@@ -111,9 +111,9 @@ void criminal_record::_search()
     std::string query;
     bool found = false;
 #ifdef _GCC_VERSION_LESS_THAN_8_
-    std::ifstream ifile((cp / "cbi").string());
+    std::ifstream ifile((cp / "cbi.dat").string());
 #elif _GCC_VERSION_MORE_THAN_8_
-    std::ifstream ifile(cp / "cbi");
+    std::ifstream ifile(cp / "cbi.dat");
 #endif
     std::cout << "\nEnter name of the criminal who has to be searched: ";
 
@@ -205,9 +205,9 @@ bloodlb1:
     _encode();
     _generateUID();
 #ifdef _GCC_VERSION_LESS_THAN_8_
-    std::ofstream ofile((cp / "cbi").string(), std::ios::app);
+    std::ofstream ofile((cp / "cbi.dat").string(), std::ios::app);
 #elif _GCC_VERSION_MORE_THAN_8_
-    std::ofstream ofile(cp / "cbi", std::ios::app);
+    std::ofstream ofile(cp / "cbi.dat", std::ios::app);
 #endif
     ofile << criminal;
     ofile.close();
@@ -222,10 +222,10 @@ void criminal_record::_delete()
     std::cin >> _uid;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 #ifdef _GCC_VERSION_LESS_THAN_8_
-    std::ifstream ifile((cp / "cbi").string());
+    std::ifstream ifile((cp / "cbi.dat").string());
     std::ofstream ofile((cp / "new").string(), std::ios::trunc);
 #elif _GCC_VERSION_MORE_THAN_8_
-    std::ifstream ifile(cp / "cbi");
+    std::ifstream ifile(cp / "cbi.dat");
     std::ofstream ofile(cp / "new", std::ios::trunc);
 #endif
     ifile.seekg(0, std::ios::beg);
@@ -240,8 +240,8 @@ void criminal_record::_delete()
     }
     ifile.close();
     ofile.close();
-    fs::remove(cp / "cbi");
-    fs::rename(cp / "new", cp / "cbi");
+    fs::remove(cp / "cbi.dat");
+    fs::rename(cp / "new", cp / "cbi.dat");
     if (not isAnyChangeMade)
         std::cout << "\nThe provided UID doesn't point to any of the criminals!";
 }
@@ -253,9 +253,9 @@ void criminal_record::_modify()
     bool found = false;
     char choice;
 #ifdef _GCC_VERSION_LESS_THAN_8_
-    std::fstream f((cp / "cbi").string(), std::ios::in | std::ios::out);
+    std::fstream f((cp / "cbi.dat").string(), std::ios::in | std::ios::out);
 #elif _GCC_VERSION_MORE_THAN_8_
-    std::fstream f(cp / "cbi", std::ios::in | std::ios::out);
+    std::fstream f(cp / "cbi.dat", std::ios::in | std::ios::out);
 #endif
     f.seekg(0, std::ios::beg);
     std::cout << "\nEnter uid of the criminal whose record you want to modify: ";

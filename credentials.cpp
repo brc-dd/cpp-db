@@ -36,9 +36,9 @@ bool xCredentials::_Check(bool doLog)
     std::string u=user, p=pwd;
     bool xSet=false;
     #ifdef _GCC_VERSION_LESS_THAN_8_
-        std::ifstream ifile((cp/"data").string());
+        std::ifstream ifile((cp/"data.dat").string());
     #elif _GCC_VERSION_MORE_THAN_8_
-        std::ifstream ifile(cp/"data");
+        std::ifstream ifile(cp/"data.dat");
     #endif
     ifile.seekg(0, std::ios::beg);
     while(ifile and not xSet)
@@ -55,9 +55,9 @@ bool xCredentials::_Check(bool doLog)
         {
             Load0(str_grant, 0, 1);
             #ifdef _GCC_VERSION_LESS_THAN_8_
-                std::ofstream ofile((cp/"logs").string(), std::ios::app);
+                std::ofstream ofile((cp/"logs.dat").string(), std::ios::app);
             #elif _GCC_VERSION_MORE_THAN_8_
-                std::ofstream ofile(cp/"logs", std::ios::app);
+                std::ofstream ofile(cp/"logs.dat", std::ios::app);
             #endif
             ofile<<ctime(new time_t(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())))<<'\n'<<"UserId : "<<decrypt(u)<<'\n';
             ofile.close();
@@ -71,9 +71,9 @@ bool xCredentials::_Check(bool doLog)
 void xCredentials::_Save()
 {
     #ifdef _GCC_VERSION_LESS_THAN_8_
-        std::ofstream ofile((cp/"data").string(), std::ios::app);
+        std::ofstream ofile((cp/"data.dat").string(), std::ios::app);
     #elif _GCC_VERSION_MORE_THAN_8_
-        std::ofstream ofile(cp/"data", std::ios::app);
+        std::ofstream ofile(cp/"data.dat", std::ios::app);
     #endif
     ofile<<xDefault;
     ofile.close();
@@ -83,9 +83,9 @@ bool xCredentials::_isUserUnique()
 {
     std::string u=user, p=pwd;
     #ifdef _GCC_VERSION_LESS_THAN_8_
-        std::ifstream ifile((cp/"data").string());
+        std::ifstream ifile((cp/"data.dat").string());
     #elif _GCC_VERSION_MORE_THAN_8_
-        std::ifstream ifile(cp/"data");
+        std::ifstream ifile(cp/"data.dat");
     #endif
     ifile.seekg(0, std::ios::beg);
     while(ifile)
@@ -104,10 +104,10 @@ bool xCredentials::_Delete()
     std::string u=user;
     bool isAnyChangeMade=false;
     #ifdef _GCC_VERSION_LESS_THAN_8_
-        std::ifstream ifile((cp/"data").string());
+        std::ifstream ifile((cp/"data.dat").string());
         std::ofstream ofile((cp/"new").string(), std::ios::out);
     #elif _GCC_VERSION_MORE_THAN_8_
-        std::ifstream ifile(cp/"data");
+        std::ifstream ifile(cp/"data.dat");
         std::ofstream ofile(cp/"new", std::ios::out);
     #endif
     ifile.seekg(0, std::ios::beg);
@@ -121,17 +121,17 @@ bool xCredentials::_Delete()
     }
     ifile.close();
     ofile.close();
-    fs::remove(cp/"data");
-    fs::rename(cp/"new", cp/"data");
+    fs::remove(cp/"data.dat");
+    fs::rename(cp/"new", cp/"data.dat");
     return isAnyChangeMade;
 }
 
 void xCredentials::_Modify(std::string u, std::string p)
 {
     #ifdef _GCC_VERSION_LESS_THAN_8_
-        std::fstream f((cp/"data").string(), std::ios::in|std::ios::out);
+        std::fstream f((cp/"data.dat").string(), std::ios::in|std::ios::out);
     #elif _GCC_VERSION_MORE_THAN_8_
-        std::fstream f(cp/"data", std::ios::in|std::ios::out);
+        std::fstream f(cp/"data.dat", std::ios::in|std::ios::out);
     #endif
     f.seekg(0, std::ios::beg);
     while(f)
