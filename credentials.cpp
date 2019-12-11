@@ -59,8 +59,8 @@ bool xCredentials::_Check(bool doLog)
 #elif _GCC_VERSION_MORE_THAN_8_
             std::ofstream ofile(cp / "logs.dat", std::ios::app);
 #endif
-            ofile << ctime(new time_t(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()))) << '\n'
-                  << "UserId : " << decrypt(u) << '\n';
+            ofile << ctime(new time_t(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())))
+                  << "UserId : " << decrypt(u) << '\n\n';
             ofile.close();
             return true;
         }
