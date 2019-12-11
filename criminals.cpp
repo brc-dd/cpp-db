@@ -223,10 +223,10 @@ void criminal_record::_delete()
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 #ifdef _GCC_VERSION_LESS_THAN_8_
     std::ifstream ifile((cp / "cbi.dat").string());
-    std::ofstream ofile((cp / "new").string(), std::ios::trunc);
+    std::ofstream ofile((cp / "new.dat").string(), std::ios::trunc);
 #elif _GCC_VERSION_MORE_THAN_8_
     std::ifstream ifile(cp / "cbi.dat");
-    std::ofstream ofile(cp / "new", std::ios::trunc);
+    std::ofstream ofile(cp / "new.dat", std::ios::trunc);
 #endif
     ifile.seekg(0, std::ios::beg);
     while (ifile)
@@ -240,7 +240,7 @@ void criminal_record::_delete()
     ifile.close();
     ofile.close();
     fs::remove(cp / "cbi.dat");
-    fs::rename(cp / "new", cp / "cbi.dat");
+    fs::rename(cp / "new.dat", cp / "cbi.dat");
     if (not isAnyChangeMade)
         std::cout << "\nThe provided UID doesn't point to any of the criminals!";
 }
@@ -252,18 +252,19 @@ void criminal_record::_modify()
     bool found = false;
     char choice;
 #ifdef _GCC_VERSION_LESS_THAN_8_
-    std::fstream f((cp / "cbi.dat").string(), std::ios::in | std::ios::out);
+    std::ifstream ifile((cp / "cbi.dat").string());
+    std::ofstream ofile((cp / "new.dat").string(), std::ios::trunc);
 #elif _GCC_VERSION_MORE_THAN_8_
-    std::fstream f(cp / "cbi.dat", std::ios::in | std::ios::out);
+    std::ifstream ifile(cp / "cbi.dat");
+    std::ofstream ofile(cp / "new.dat", std::ios::trunc);
 #endif
-    f.seekg(0, std::ios::beg);
+    ifile.seekg(0, std::ios::beg);
     std::cout << "\nEnter uid of the criminal whose record you want to modify: ";
     std::cin >> _uid;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << '\n';
-    while (f)
+    while (ifile>>criminal)
     {
-        f >> criminal;
         if (_uid == uid)
         {
             found = true;
@@ -309,13 +310,11 @@ void criminal_record::_modify()
             putch(choice);
             std::cout << '\n'
                       << '\n';
-            ;
             switch (choice)
             {
             case '1':
             namelb2:
                 std::cout << "Enter new name: ";
-
                 std::getline(std::cin, name);
                 if (not isValidName(name))
                 {
@@ -337,7 +336,6 @@ void criminal_record::_modify()
             case '3':
             doblb2:
                 std::cout << "Enter new date of birth (dd mm yyyy): ";
-
                 std::cin >> dob.mm >> dob.dd >> dob.yyyy;
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 if (not isValidDate(dob))
@@ -349,7 +347,6 @@ void criminal_record::_modify()
             case '4':
             fatherlb2:
                 std::cout << "Enter new father's name: ";
-
                 std::getline(std::cin, father);
                 if (not isValidName(father))
                 {
@@ -360,7 +357,6 @@ void criminal_record::_modify()
             case '5':
             addresslb2:
                 std::cout << "Enter new address: ";
-
                 std::getline(std::cin, address);
                 if (not isValidAddress(address))
                 {
@@ -370,13 +366,11 @@ void criminal_record::_modify()
                 break;
             case '6':
                 std::cout << "Enter new crimes committed: ";
-
                 std::getline(std::cin, offense);
                 break;
             case '7':
             bloodlb2:
                 std::cout << "Enter new blood group: ";
-
                 std::getline(std::cin, blood);
                 if (not isValidBlood(blood))
                 {
@@ -386,12 +380,10 @@ void criminal_record::_modify()
                 break;
             case '8':
                 std::cout << "Enter new charges: ";
-
                 std::getline(std::cin, crime_codes);
                 break;
             case '9':
                 std::cout << "Enter new reward (Rs.): ";
-
                 std::cin >> reward;
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 break;
@@ -401,12 +393,13 @@ void criminal_record::_modify()
                 break;
             }
             _encode();
-            f.seekg(-criminal.length, std::ios::cur);
-            f << criminal;
-            break;
         }
+        ofile << criminal;
     }
+    ifile.close();
+    ofile.close();
+    fs::remove(cp / "cbi.dat");
+    fs::rename(cp / "new.dat", cp / "cbi.dat");
     if (found == false)
         std::cout << "\nNo record found!";
-    f.close();
 }
