@@ -36,7 +36,6 @@ void user_create()
         Load0(str, 0, 1);
         getch();
     }
-    AdminMenuLoader(true);
 }
 
 void user_delete()
@@ -53,7 +52,6 @@ void user_delete()
     else
         std::cout<<"\nNo such user exists!";
     getch();
-    AdminMenuLoader(true);
 }
 
 void user_modify()
@@ -89,5 +87,4 @@ void user_modify()
         Load0(str, 0, 1);
         getch();
     }
-    AdminMenuLoader(true);
 }

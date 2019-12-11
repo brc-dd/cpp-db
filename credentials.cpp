@@ -60,7 +60,7 @@ bool xCredentials::_Check(bool doLog)
             std::ofstream ofile(cp / "logs.dat", std::ios::app);
 #endif
             ofile << ctime(new time_t(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())))
-                  << "UserId : " << decrypt(u) << '\n\n';
+                  << "UserId : " << decrypt(u) << "\n\n";
             ofile.close();
             return true;
         }

@@ -161,7 +161,7 @@ bool caller3(bool userisAdmin)
         case '6':
             if (userisAdmin)
             {
-                AdminMenuLoader(false);
+                AdminMenuLoader();
                 bypass = true;
                 ch = 'Y';
                 break;

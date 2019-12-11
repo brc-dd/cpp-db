@@ -11,4 +11,4 @@
 void user_create();
 void user_delete();
 void user_modify();
-extern void AdminMenuLoader(bool);
+extern void AdminMenuLoader();

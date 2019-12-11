@@ -9,5 +9,5 @@
 
 using namespace std::literals::chrono_literals;
 
-void AdminChoiceProcessor(bool);
-void AdminMenuLoader(bool);
+bool AdminChoiceProcessor();
+void AdminMenuLoader();

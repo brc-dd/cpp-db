@@ -263,7 +263,7 @@ void criminal_record::_modify()
     std::cin >> _uid;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << '\n';
-    while (ifile>>criminal)
+    while (ifile >> criminal)
     {
         if (_uid == uid)
         {

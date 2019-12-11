@@ -20,10 +20,11 @@ int main()
     xDefault.__init__(encrypt(logon.user), encrypt(logon.pwd));
     if(not xDefault._Check()) return 1;
     std::this_thread::sleep_for(1s);
+    bool userisAdmin = xDefault.userisAdmin();
     lb:
-    caller2(xDefault.userisAdmin(), bypass);
+    caller2(userisAdmin, bypass);
     rlutil::showcursor();
-    if(caller3(xDefault.userisAdmin()))
+    if(caller3(userisAdmin))
     {
         bypass = true;
         goto lb;
