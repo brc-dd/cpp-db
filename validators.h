@@ -10,9 +10,9 @@ struct date
 
 std::string dateToString(date);
 date stringToDate(std::string);
-bool iequals(const std::string&, const std::string&);
+bool iequals(const std::string &, const std::string &);
 std::string to_upper(std::string);
-std::istream& getline(std::istream&, std::string&, std::string);
+std::istream &getline(std::istream &, std::string &, std::string);
 
 bool isValidName(std::string);
 bool isValidSex(char);

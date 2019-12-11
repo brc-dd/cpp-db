@@ -6,8 +6,8 @@
 #include "constants.h"
 #include "rlutil.h"
 
-void SetWindow(int Width, int Height, bool enableScrollBar=false);
-void Align0(std::string str, int i, bool change_line=true);
-void Load0(std::string str, int k, int padding_change, bool change_line=true);
+void SetWindow(int Width, int Height, bool enableScrollBar = false);
+void Align0(std::string str, int i, bool change_line = true);
+void Load0(std::string str, int k, int padding_change, bool change_line = true);
 void Load0(std::string, std::string, int);
 void Load0(std::string, std::string, std::string, int);

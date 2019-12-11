@@ -7,11 +7,11 @@
 #include "constants.h"
 #include <bits/stdc++.h>
 #ifdef _GCC_VERSION_LESS_THAN_8_
-    #include <experimental/filesystem>
-    namespace fs = std::experimental::filesystem;
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
 #elif _GCC_VERSION_MORE_THAN_8_
-    #include <filesystem>
-    namespace fs = std::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 #endif
 
 class criminal_record
@@ -22,9 +22,10 @@ private:
     unsigned int reward;
     unsigned long int length;
     unsigned long long int uid;
+
 public:
-    friend std::ostream& operator<<(std::ostream&, const criminal_record&);
-    friend std::istream& operator>>(std::istream&,  criminal_record&);
+    friend std::ostream &operator<<(std::ostream &, const criminal_record &);
+    friend std::istream &operator>>(std::istream &, criminal_record &);
     void _read();
     void _write();
     void _search();
@@ -35,4 +36,3 @@ public:
     void _decode();
     void _generateUID();
 };
-

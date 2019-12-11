@@ -18,13 +18,14 @@ int main()
     credentials logon = caller1();
     extern xCredentials xDefault;
     xDefault.__init__(encrypt(logon.user), encrypt(logon.pwd));
-    if(not xDefault._Check()) return 1;
+    if (not xDefault._Check())
+        return 1;
     std::this_thread::sleep_for(1s);
     bool userisAdmin = xDefault.userisAdmin();
-    lb:
+lb:
     caller2(userisAdmin, bypass);
     rlutil::showcursor();
-    if(caller3(userisAdmin))
+    if (caller3(userisAdmin))
     {
         bypass = true;
         goto lb;

@@ -10,7 +10,7 @@
 
 using namespace std::literals::chrono_literals;
 
-credentials caller1(bool existing_user=true, bool modify=false);
+credentials caller1(bool existing_user = true, bool modify = false);
 void caller2(bool, bool);
 extern bool AdminChoiceProcessor();
 bool caller3(bool);
